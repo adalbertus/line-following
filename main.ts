@@ -1,6 +1,7 @@
 let sensorLeft = 0
 let sensorRight = 0
 let robotMode = "waiting"
+let isFullSpeed = false
 
 pins.setPull(DigitalPin.P15, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P16, PinPullMode.PullUp)
@@ -16,21 +17,23 @@ function driveBackward (ms: number = 0) {
 
 // go forward slowly - to remove "jumping"
 function driveForward (ms: number = 0) {
-    pins.servoWritePin(AnalogPin.P1, 85)
-    pins.servoWritePin(AnalogPin.P2, 95)
-    basic.pause(50)
+    if(!isFullSpeed) {
+        pins.servoWritePin(AnalogPin.P1, 85)
+        pins.servoWritePin(AnalogPin.P2, 95)
+        basic.pause(50)
 
-    pins.servoWritePin(AnalogPin.P1, 80)
-    pins.servoWritePin(AnalogPin.P2, 100)
-    basic.pause(50)
+        pins.servoWritePin(AnalogPin.P1, 80)
+        pins.servoWritePin(AnalogPin.P2, 100)
+        basic.pause(50)
 
-    pins.servoWritePin(AnalogPin.P1, 70)
-    pins.servoWritePin(AnalogPin.P2, 120)
-    basic.pause(30)
+        pins.servoWritePin(AnalogPin.P1, 70)
+        pins.servoWritePin(AnalogPin.P2, 120)
+        basic.pause(30)
 
-    pins.servoWritePin(AnalogPin.P1, 0)
-    pins.servoWritePin(AnalogPin.P2, 180)
-        
+        pins.servoWritePin(AnalogPin.P1, 0)
+        pins.servoWritePin(AnalogPin.P2, 180)
+    }
+    isFullSpeed = true
     if (ms > 0) {
         basic.pause(ms)
         driveStop()
@@ -40,9 +43,11 @@ function driveForward (ms: number = 0) {
 function driveStop () {
     pins.servoWritePin(AnalogPin.P1, 90)
     pins.servoWritePin(AnalogPin.P2, 90)
+    isFullSpeed = false
 }
 
 function turn(direction : Direction, ms : number = 100) {
+    isFullSpeed = false
     if(direction == Direction.Right) {
         pins.servoWritePin(AnalogPin.P1, 90)
         pins.servoWritePin(AnalogPin.P2, 95)       
