@@ -5,6 +5,10 @@ let isFullSpeed = false
 
 pins.setPull(DigitalPin.P15, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P16, PinPullMode.PullUp)
+let ledStrip = neopixel.create(DigitalPin.P0, 5, NeoPixelMode.RGB)
+ledStrip.setBrightness(50)
+ledStrip.clear();
+ledStrip.show();
 
 function driveBackward (ms: number = 0) {
     pins.servoWritePin(AnalogPin.P1, 180)
@@ -125,7 +129,24 @@ input.onButtonPressed(Button.B, function () {
     driveStop()
 })
 
+function turnLightsOn() {
+    if(input.lightLevel() == 0)
+    {
+        ledStrip.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
+        ledStrip.setPixelColor(1, neopixel.colors(NeoPixelColors.Indigo))
+        ledStrip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
+        ledStrip.setPixelColor(3, neopixel.colors(NeoPixelColors.Indigo))
+        ledStrip.setPixelColor(4, neopixel.colors(NeoPixelColors.Red))
+        ledStrip.show();
+    } else {
+        ledStrip.clear();
+        ledStrip.show();
+    }
+}
+
 basic.forever(function () {
+    //turnLightsOn()
+
     if(robotMode == "followTheLine") {
         followTheLine()
     }	
