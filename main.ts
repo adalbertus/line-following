@@ -86,16 +86,16 @@ function readSensors() {
 }
 
 function turnUntilSensor(direction: Direction){
-    turn(direction)
+    turn(direction, 50)
     readSensors()
 
     if(direction == Direction.Right) {
         if(sensorRight == 0) {
-            turn(Direction.Right)
+            turn(Direction.Right, 50)
         }
     } else {
         if(sensorLeft == 0) {
-            turn(Direction.Left)
+            turn(Direction.Left, 50)
         }       
     }
     pause(50)
